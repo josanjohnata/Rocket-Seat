@@ -5,21 +5,25 @@ import { useState } from 'react';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 
-const formatDate = (date: Date): string => {
-  const formattedDate = format(date, "EEE, d 'de' MMMM 'de' yyyy", { locale: ptBR });
-  return formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1);
-};
+import '../../translation/hooks/i18n';
+import { useTranslation } from 'react-i18next';
 
 export default function Home() {
   const [participants, setParticipants] = useState<string[]>([]);
   const [participantName, setParticipantName] = useState('');
+  const { t } = useTranslation();
+
+  const formatDate = (date: Date): string => {
+    const formattedDate = format(date, "EEE, d 'de' MMMM 'de' yyyy", { locale: ptBR });
+    return formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1);
+  };
 
   const currentDate = new Date();
   const formattedDate = formatDate(currentDate);
 
   const handleParticipantAdd = () => {
     if(participants.includes(participantName)) {
-      return Alert.alert('Participante existe', 'Já existe um participante na lista com esse nome.');
+      return Alert.alert(t('home.alertAddParticipant.title'), t('home.alertAddParticipant.description'));
     }
 
     setParticipants(prevState => [...prevState, participantName]);
@@ -29,7 +33,7 @@ export default function Home() {
   const handleParticipantRemove = (name: string) => {
     
 
-    Alert.alert('Remover', `Remover o participante ${name}?`, [
+    Alert.alert(t('home.alertRemoveParticipant.title'), `${t('home.alertRemoveParticipant.description')} ${name}?`, [
       {
         text: 'Sim',
         onPress: () => setParticipants(prevState => prevState.filter(participant => participant !== name))
@@ -44,7 +48,7 @@ export default function Home() {
   return (
     <View style={styles.container}>
       <Text style={styles.eventName}>
-        Nome do evento
+        {t('home.title')}
       </Text>
 
       <Text style={styles.eventDate}>
@@ -54,7 +58,7 @@ export default function Home() {
       <View style={styles.form}>
         <TextInput
           style={styles.input}
-          placeholder='Nome do participante'
+          placeholder={t('home.textInput')}
           placeholderTextColor='#6B6B6B'
           onChangeText={event => setParticipantName(event)}
           value={participantName}
@@ -76,7 +80,7 @@ export default function Home() {
         keyExtractor={item => item}
         ListEmptyComponent={() => (
           <Text style={styles.listEmptyText}>
-            Ninguém chegou no evento ainda? Adicione participantes a sua lista de presença.
+            {t('home.listEmptyComponent')}
           </Text>
         )}
         renderItem={({ item }) => (
