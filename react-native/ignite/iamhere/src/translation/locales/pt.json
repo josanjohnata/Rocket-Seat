@@ -1,0 +1,17 @@
+{
+  "translation": {
+    "home": {
+      "title": "Talks tech",
+      "textInput": "Nome do participante",
+      "listEmptyComponent": "Ninguém chegou no evento ainda? Adicione participantes a sua lista de presença.",
+      "alertAddParticipant": {
+        "title": "Participante existe",
+        "description": "Já existe um participante na lista com esse nome."
+      },
+      "alertRemoveParticipant": {
+        "title": "Remover",
+        "description": "Remover o participante"
+      }
+    }
+  }
+}
