@@ -2,10 +2,20 @@ import { Text, View, TextInput, TouchableOpacity, FlatList, Alert } from 'react-
 import { styles } from './styles';
 import { Participant } from '../../components/Participant';
 import { useState } from 'react';
+import { format } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
+
+const formatDate = (date: Date): string => {
+  const formattedDate = format(date, "EEE, d 'de' MMMM 'de' yyyy", { locale: ptBR });
+  return formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1);
+};
 
 export default function Home() {
   const [participants, setParticipants] = useState<string[]>([]);
   const [participantName, setParticipantName] = useState('');
+
+  const currentDate = new Date();
+  const formattedDate = formatDate(currentDate);
 
   const handleParticipantAdd = () => {
     if(participants.includes(participantName)) {
@@ -38,7 +48,7 @@ export default function Home() {
       </Text>
 
       <Text style={styles.eventDate}>
-        Sexta, 22 de Março de 2024
+        {formattedDate}
       </Text>
 
       <View style={styles.form}>
