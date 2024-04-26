@@ -6,8 +6,11 @@ import { Highlight } from '@components/Highlight';
 import { ButtonIcon } from '@components/ButtonIcon';
 import { Input } from '@components/Input';
 import { Filter } from '@components/Filter';
+import { PlayerCard } from '@components/PlayerCard';
+import { ListEmpty } from '@components/ListEmpty';
+import { Button } from '@components/Button';
 
-import { Container, Form, HeaderList, NumbersOfPlayers } from './styles';
+import { Container, Form, HeaderList, NumberOfPlayers } from './styles';
 
 export function Players() {
   const [team, setTeam] = useState('Time A');
@@ -45,8 +48,34 @@ export function Players() {
           horizontal
         />
 
-        <NumbersOfPlayers>{players.length}</NumbersOfPlayers>
+        <NumberOfPlayers>{players.length}</NumberOfPlayers>
       </HeaderList>
+
+      <FlatList
+        data={players}
+        keyExtractor={item => item}
+        showsVerticalScrollIndicator={false}
+        renderItem={({ item }) => (
+          <PlayerCard
+            name={item}
+            onRemove={() => {}}
+          />
+        )}
+        ListEmptyComponent={() => (
+          <ListEmpty
+            message='Não há pessoas nesse time'
+          />
+        )}
+        contentContainerStyle={[
+          { paddingBottom: 100 },
+          !players.length && { flex: 1 }
+        ]}
+      />
+
+      <Button
+        title='Remover Turma'
+        type='SECONDARY'
+      />
     </Container>
   );
 };

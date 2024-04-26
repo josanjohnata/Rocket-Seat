@@ -22,6 +22,7 @@ export function Groups() {
       <FlatList
         data={groups}
         keyExtractor={item => item}
+        showsVerticalScrollIndicator={false}
         renderItem={({ item }) => (
           <GroupCard
             title={item}
