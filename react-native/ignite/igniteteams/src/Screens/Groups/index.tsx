@@ -1,8 +1,9 @@
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { FlatList } from 'react-native';
 
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
+
+import { groupsGetAll } from '@storage/group/groupsGetAll';
 
 import { Header } from '@components/Header';
 import { Highlight } from '@components/Highlight';
@@ -21,6 +22,24 @@ export function Groups() {
     navigation.navigate('new');
   }
 
+  const fetchGroups = async () => {
+    try{
+      const data = await groupsGetAll();
+
+      setGroups(data);
+    } catch (error) {
+      console.log(error)
+    }
+  };
+
+  const handleOpenGroup = (group: string) => {
+    navigation.navigate('players', { group });
+  };
+
+  useFocusEffect(useCallback(() => {
+    fetchGroups();
+  }, []));
+
   return (
     <Container>
       <Header />
@@ -36,6 +55,7 @@ export function Groups() {
         renderItem={({ item }) => (
           <GroupCard
             title={item}
+            onPress={() => handleOpenGroup(item)}
           />
         )}
         contentContainerStyle={!groups.length && { flex: 1 }}
